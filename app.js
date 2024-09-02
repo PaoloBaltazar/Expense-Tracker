@@ -2,6 +2,8 @@
 const express = require('express')
 const cors = require('cors');
 const { db } = require('./db/db');
+const {readdirSync} = require('fs');
+const { route } = require('./routes/transactions');
 
 const app = express()
 
@@ -13,9 +15,8 @@ const PORT = process.env.PORT
 app.use(express.json())
 app.use(cors())
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+//routes
+readdirSync('./routes').map((routes) => app.use('/api/v1', require('./routes/' + routes)))
 
 const server = () => {
   db()
